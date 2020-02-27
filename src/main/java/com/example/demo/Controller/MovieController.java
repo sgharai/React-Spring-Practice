@@ -3,14 +3,12 @@ package com.example.demo.Controller;
 import com.example.demo.Model.Movie;
 import com.example.demo.Repository.MovieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
 
 @RestController
-public class Controller {
+public class MovieController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello, this app is working!";
@@ -19,21 +17,23 @@ public class Controller {
     @Autowired
     MovieRepo movieRepo;
 
-    @GetMapping("/movies")
-    public Iterable<Movie> getMovies(){
-        return movieRepo.findAll();
-    }
+//    @GetMapping("/movies")
+//    public Iterable<Movie> getMovies(){
+//        return movieRepo.findAll();
+//    }
 
     @PostMapping("/movies")
     Movie newMovie(@RequestBody Movie newMovie) {
         return movieRepo.save(newMovie);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    ModelAndView index() {
+    @RequestMapping(value = "/movies", method = RequestMethod.GET)
+    ModelAndView showMovies() {
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("name", "Sofia");
-
+        mav.addObject("movies", movieRepo.findAll());
         return mav;
     }
+
+
+
 }
